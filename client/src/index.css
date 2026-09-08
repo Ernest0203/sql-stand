@@ -175,6 +175,11 @@ button:disabled {
   flex-shrink: 0;
 }
 
+.results-success {
+  border-bottom: none;
+  color: #86efac;
+}
+
 .results-scroll {
   flex: 1;
   overflow-y: auto;

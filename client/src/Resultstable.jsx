@@ -6,6 +6,11 @@ function ResultsTableInner({ result }) {
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
   const sentinelRef = useRef(null);
 
+  // Для DDL/DML-команд (CREATE, DROP, INSERT без RETURNING, ...)
+  // Postgres не возвращает строки данных вообще — это не ошибка,
+  // просто нечего показывать в виде таблицы.
+  const hasRows = Array.isArray(result.rows) && result.fields?.length > 0;
+
   // При смене результата (новый запрос) начинаем сначала.
   useEffect(() => {
     setVisibleCount(BATCH_SIZE);
@@ -15,6 +20,7 @@ function ResultsTableInner({ result }) {
   // в конце таблицы. Когда он попадает в область видимости при
   // скролле — подгружаем ещё одну пачку строк.
   useEffect(() => {
+    if (!hasRows) return;
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
 
@@ -29,7 +35,20 @@ function ResultsTableInner({ result }) {
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [result]);
+  }, [result, hasRows]);
+
+  if (!hasRows) {
+    return (
+      <div className="results">
+        <div className="results-meta-bar results-success">
+          ✓ {result.command} выполнено успешно
+          {typeof result.rowCount === 'number' && result.rowCount > 0
+            ? ` · затронуто строк: ${result.rowCount}`
+            : ''}
+        </div>
+      </div>
+    );
+  }
 
   const rows = result.rows.slice(0, visibleCount);
   const hasMore = visibleCount < result.rows.length;
