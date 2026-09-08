@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { runQuery, fetchSchema } from './api';
+import { ResultsTable } from './ResultsTable';
 
 const DEFAULT_QUERY = `SELECT users.name, orders.product, orders.amount
 FROM users
@@ -83,28 +84,7 @@ function App() {
 
         {error && <div className="error">{error}</div>}
 
-        {result && (
-          <div className="results">
-            <table>
-              <thead>
-                <tr>
-                  {result.fields.map((f) => (
-                    <th key={f}>{f}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {result.rows.map((row, i) => (
-                  <tr key={i}>
-                    {result.fields.map((f) => (
-                      <td key={f}>{String(row[f])}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        {result && <ResultsTable result={result} />}
       </main>
     </div>
   );

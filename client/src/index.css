@@ -11,7 +11,8 @@ body {
 
 .app {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* --- Schema sidebar --- */
@@ -22,6 +23,7 @@ body {
   padding: 20px 16px;
   background: #14161d;
   border-right: 1px solid #22242e;
+  overflow-y: auto;
 }
 
 .schema-panel h2 {
@@ -72,12 +74,17 @@ body {
   flex: 1;
   padding: 32px 40px;
   max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .main h1 {
   font-size: 20px;
   margin: 0 0 20px;
   color: #f0f1f5;
+  flex-shrink: 0;
 }
 
 .editor {
@@ -92,6 +99,7 @@ body {
   font-size: 14px;
   line-height: 1.5;
   resize: vertical;
+  flex-shrink: 0;
 }
 
 .editor:focus {
@@ -104,6 +112,7 @@ body {
   align-items: center;
   gap: 14px;
   margin-top: 12px;
+  flex-shrink: 0;
 }
 
 button {
@@ -147,9 +156,36 @@ button:disabled {
 
 .results {
   margin-top: 20px;
-  overflow-x: auto;
   border: 1px solid #22242e;
   border-radius: 8px;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.results-meta-bar {
+  padding: 10px 14px;
+  background: #1b1f2a;
+  border-bottom: 1px solid #22242e;
+  color: #9aa0ae;
+  font-size: 12px;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  flex-shrink: 0;
+}
+
+.results-scroll {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.results-sentinel {
+  padding: 14px;
+  text-align: center;
+  color: #5c6070;
+  font-size: 12px;
 }
 
 table {
